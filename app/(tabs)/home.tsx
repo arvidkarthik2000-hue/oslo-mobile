@@ -102,7 +102,10 @@ export default function HomeScreen() {
 
         {/* Smart Report CTA */}
         {documents.length > 0 && (
-          <TouchableOpacity style={styles.smartReportCard}>
+          <TouchableOpacity
+            style={styles.smartReportCard}
+            onPress={() => router.push('/smart-report')}
+          >
             <Text style={styles.smartReportTitle}>🧠 View your Smart Report</Text>
             <Text style={styles.smartReportSub}>
               AI-synthesized health summary across all your records
@@ -195,6 +198,14 @@ export default function HomeScreen() {
             </Text>
           </View>
           <Text style={styles.chevron}>›</Text>
+        </TouchableOpacity>
+
+        {/* Settings */}
+        <TouchableOpacity
+          style={styles.settingsLink}
+          onPress={() => router.push('/settings')}
+        >
+          <Text style={styles.settingsText}>⚙️ Settings</Text>
         </TouchableOpacity>
 
         <AIDisclaimer />
@@ -347,5 +358,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textSecondary,
     marginTop: 2,
+  },
+  settingsLink: {
+    marginHorizontal: spacing(5),
+    marginVertical: spacing(2),
+    padding: spacing(3),
+    alignItems: 'center',
+  },
+  settingsText: {
+    fontSize: 14,
+    color: colors.textSecondary,
   },
 });

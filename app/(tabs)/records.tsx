@@ -79,8 +79,10 @@ export default function RecordsScreen() {
                   label={`${cat.icon}  ${cat.label}`}
                   count={count}
                   onPress={() => {
-                    // TODO: navigate to filtered document list
-                    console.log('Navigate to', cat.key);
+                    router.push({
+                      pathname: '/records/[category]',
+                      params: { category: cat.key },
+                    });
                   }}
                 />
               );

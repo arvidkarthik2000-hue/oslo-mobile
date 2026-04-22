@@ -1,16 +1,83 @@
 /**
- * Trends tab — placeholder shell for Day 4 build.
- * Filter chips + empty state pointing to upload flow.
+ * Trends tab — MetricCards grid with sparklines, filter by system.
  */
-import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import { colors, spacing } from '../../components/design-tokens';
-import { FilterChip } from '../../components';
+import React, { useEffect, useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
+import { router } from 'expo-router';
+import { colors, spacing, radius } from '../../components/design-tokens';
+import { FilterChip, StatusDot, Sparkline } from '../../components';
+import { useAuthStore } from '../../store/auth';
+import { api } from '../../lib/api';
 
-const SYSTEMS = ['All', 'Cardiovascular', 'Metabolic', 'Renal', 'Liver', 'Endocrine', 'Inflammatory'];
+const SYSTEMS = [
+  { key: '', label: 'All' },
+  { key: 'cardiovascular', label: 'Cardiovascular' },
+  { key: 'metabolic', label: 'Metabolic' },
+  { key: 'renal', label: 'Renal' },
+  { key: 'liver', label: 'Liver' },
+  { key: 'endocrine', label: 'Endocrine' },
+  { key: 'inflammatory', label: 'Inflammatory' },
+];
+
+interface MetricData {
+  test_name: string;
+  latest_value: number | null;
+  unit: string | null;
+  ref_low: number | null;
+  ref_high: number | null;
+  flag: string | null;
+  sparkline: number[];
+  data_points: number;
+}
+
+const flagToStatus = (flag?: string | null) => {
+  switch (flag) {
+    case 'watch': return 'watch' as const;
+    case 'flag': case 'critical': return 'flag' as const;
+    default: return 'ok' as const;
+  }
+};
 
 export default function TrendsScreen() {
-  const [active, setActive] = React.useState('All');
+  const profileId = useAuthStore((s) => s.activeProfileId);
+  const [system, setSystem] = useState('');
+  const [metrics, setMetrics] = useState<MetricData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchTrends = useCallback(async () => {
+    if (!profileId) return;
+    try {
+      let path = `/trends/${profileId}`;
+      if (system) path += `?system=${system}`;
+      const res = await api.get<{ metrics: MetricData[]; total_tests: number }>(path);
+      setMetrics(res.metrics || []);
+    } catch (err) {
+      console.error('Failed to fetch trends:', err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [profileId, system]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchTrends();
+  }, [fetchTrends]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchTrends();
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -18,24 +85,82 @@ export default function TrendsScreen() {
         <Text style={styles.title}>Trends</Text>
       </View>
 
-      <View style={styles.filters}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filtersScroll}
+        contentContainerStyle={styles.filters}
+      >
         {SYSTEMS.map((s) => (
           <FilterChip
-            key={s}
-            label={s}
-            active={active === s}
-            onPress={() => setActive(s)}
+            key={s.key}
+            label={s.label}
+            active={system === s.key}
+            onPress={() => setSystem(s.key)}
           />
         ))}
-      </View>
+      </ScrollView>
 
-      <View style={styles.center}>
-        <Text style={styles.emptyIcon}>📈</Text>
-        <Text style={styles.emptyTitle}>Trends coming soon</Text>
-        <Text style={styles.emptyText}>
-          Upload multiple lab reports to see your health metrics over time.
-        </Text>
-      </View>
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color={colors.accent} />
+        </View>
+      ) : metrics.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={styles.emptyIcon}>📈</Text>
+          <Text style={styles.emptyTitle}>No trend data yet</Text>
+          <Text style={styles.emptyText}>
+            Upload multiple lab reports to see your health metrics over time.
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.grid}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {metrics.map((m) => (
+            <TouchableOpacity
+              key={m.test_name}
+              style={styles.metricCard}
+              activeOpacity={0.7}
+            >
+              <View style={styles.metricHeader}>
+                <Text style={styles.metricName} numberOfLines={1}>
+                  {m.test_name}
+                </Text>
+                <StatusDot status={flagToStatus(m.flag)} />
+              </View>
+              <View style={styles.metricValue}>
+                <Text style={styles.valueText}>
+                  {m.latest_value != null ? m.latest_value : '—'}
+                </Text>
+                <Text style={styles.unitText}>{m.unit || ''}</Text>
+              </View>
+              {m.sparkline.length >= 2 && (
+                <View style={styles.sparkWrap}>
+                  <Sparkline
+                    data={m.sparkline}
+                    width={140}
+                    height={28}
+                    color={
+                      m.flag === 'flag' || m.flag === 'critical'
+                        ? colors.statusFlag
+                        : m.flag === 'watch'
+                          ? colors.statusWatch
+                          : colors.accent
+                    }
+                  />
+                </View>
+              )}
+              <Text style={styles.dataPoints}>
+                {m.data_points} reading{m.data_points !== 1 ? 's' : ''}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
@@ -51,9 +176,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.textPrimary,
   },
+  filtersScroll: {
+    maxHeight: 44,
+  },
   filters: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: spacing(2),
     paddingHorizontal: spacing(5),
     paddingBottom: spacing(3),
@@ -76,5 +203,56 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: spacing(2),
     lineHeight: 20,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: spacing(4),
+    gap: spacing(3),
+    paddingBottom: spacing(10),
+  },
+  metricCard: {
+    width: '47%',
+    padding: spacing(4),
+    borderRadius: radius.lg,
+    backgroundColor: colors.bgSecondary,
+    borderWidth: 1,
+    borderColor: colors.borderTertiary,
+  },
+  metricHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing(2),
+  },
+  metricName: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: colors.textSecondary,
+    flex: 1,
+    marginRight: spacing(2),
+  },
+  metricValue: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: spacing(1),
+  },
+  valueText: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: colors.textPrimary,
+  },
+  unitText: {
+    fontSize: 12,
+    color: colors.textTertiary,
+  },
+  sparkWrap: {
+    marginTop: spacing(3),
+    alignItems: 'center',
+  },
+  dataPoints: {
+    fontSize: 11,
+    color: colors.textTertiary,
+    marginTop: spacing(2),
   },
 });
