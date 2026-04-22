@@ -13,3 +13,5 @@ export { ExtractionReview } from './ExtractionReview';
 export { CriticalValueBanner } from './CriticalValueBanner';
 export { Sparkline } from './Sparkline';
 export { VoiceRecorder } from './VoiceRecorder';
+export { OfflineBanner } from './OfflineBanner';
+export { OnboardingTooltip } from './OnboardingTooltip';

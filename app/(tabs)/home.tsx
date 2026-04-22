@@ -18,6 +18,7 @@ import { colors, spacing, radius } from '../../components/design-tokens';
 import { QuickAction } from '../../components/QuickAction';
 import { StatusPill } from '../../components/StatusPill';
 import { AIDisclaimer } from '../../components';
+import { OnboardingTooltip } from '../../components/OnboardingTooltip';
 import { useAuthStore } from '../../store/auth';
 import { useDocumentsStore } from '../../store/documents';
 import type { LabTest } from '../../store/documents';
@@ -86,6 +87,12 @@ export default function HomeScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        {/* Onboarding tooltip */}
+        <OnboardingTooltip
+          id="home-welcome"
+          text="👋 Welcome to OSLO! Upload a lab report using the File button below to get started."
+        />
+
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.greeting}>{greeting()}</Text>
