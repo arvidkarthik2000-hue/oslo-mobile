@@ -61,6 +61,8 @@ export default function TimelineScreen() {
   const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summarizing, setSummarizing] = useState(false);
 
   const fetchEvents = useCallback(async () => {
     try {
@@ -148,6 +150,46 @@ export default function TimelineScreen() {
             onSubmitEditing={fetchEvents}
             returnKeyType="search"
           />
+        </View>
+      )}
+
+      {/* Summarize button */}
+      <TouchableOpacity
+        style={[styles.summarizeBtn, summarizing && { opacity: 0.6 }]}
+        onPress={async () => {
+          if (!profileId || summarizing) return;
+          setSummarizing(true);
+          try {
+            const res = await api.post<{ report_markdown: string }>('/timeline/summarize', {
+              profile_id: profileId,
+              report_type: 'timeline_summary',
+            });
+            setSummary(res.report_markdown);
+          } catch {
+            setSummary('Timeline summary unavailable. Please try again.');
+          } finally {
+            setSummarizing(false);
+          }
+        }}
+        disabled={summarizing}
+      >
+        {summarizing ? (
+          <ActivityIndicator size="small" color={colors.accent} />
+        ) : (
+          <Text style={styles.summarizeBtnText}>🧠 Summarize my health</Text>
+        )}
+      </TouchableOpacity>
+
+      {/* Summary display */}
+      {summary && (
+        <View style={styles.summaryBox}>
+          <View style={styles.summaryHeader}>
+            <Text style={styles.summaryTitle}>Health Summary</Text>
+            <TouchableOpacity onPress={() => setSummary(null)}>
+              <Text style={styles.summaryClose}>✕</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.summaryText}>{summary}</Text>
         </View>
       )}
 
@@ -270,5 +312,47 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textTertiary,
     marginTop: spacing(1),
+  },
+  summarizeBtn: {
+    marginHorizontal: spacing(5),
+    marginBottom: spacing(2),
+    padding: spacing(3),
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    alignItems: 'center',
+  },
+  summarizeBtnText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.accent,
+  },
+  summaryBox: {
+    marginHorizontal: spacing(5),
+    marginBottom: spacing(3),
+    padding: spacing(4),
+    borderRadius: radius.lg,
+    backgroundColor: colors.accentMuted,
+  },
+  summaryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing(2),
+  },
+  summaryTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.accent,
+  },
+  summaryClose: {
+    fontSize: 16,
+    color: colors.textTertiary,
+    padding: spacing(1),
+  },
+  summaryText: {
+    fontSize: 14,
+    color: colors.textPrimary,
+    lineHeight: 22,
   },
 });

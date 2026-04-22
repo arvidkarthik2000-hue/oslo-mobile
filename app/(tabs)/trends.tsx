@@ -130,6 +130,10 @@ export default function TrendsScreen() {
               key={m.test_name}
               style={styles.metricCard}
               activeOpacity={0.7}
+              onPress={() => router.push({
+                pathname: '/trend/[test]',
+                params: { test: encodeURIComponent(m.test_name) },
+              })}
             >
               <View style={styles.metricHeader}>
                 <Text style={styles.metricName} numberOfLines={1}>

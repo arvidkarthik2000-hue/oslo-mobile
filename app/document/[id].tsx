@@ -23,6 +23,8 @@ export default function DocumentDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [explaining, setExplaining] = useState(false);
+  const [comparison, setComparison] = useState<any>(null);
+  const [comparing, setComparing] = useState(false);
 
   useEffect(() => {
     loadDocument();
@@ -176,6 +178,59 @@ export default function DocumentDetailScreen() {
           </View>
         )}
 
+        {/* Compare to Previous */}
+        {doc.classified_as === 'lab_report' && (
+          <View style={styles.section}>
+            {comparison ? (
+              <View style={styles.explanationBox}>
+                <Text style={styles.explanationTitle}>📊 Comparison with previous</Text>
+                {comparison.previous_date && (
+                  <Text style={styles.compareDate}>
+                    vs {new Date(comparison.previous_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {comparison.provider_name ? ` · ${comparison.provider_name}` : ''}
+                  </Text>
+                )}
+                {comparison.diffs?.map((d: any, i: number) => (
+                  <View key={i} style={styles.diffRow}>
+                    <Text style={styles.diffName}>{d.test_name}</Text>
+                    <Text style={[
+                      styles.diffChange,
+                      { color: d.change_pct > 0 ? colors.statusFlag : d.change_pct < 0 ? colors.accent : colors.textSecondary }
+                    ]}>
+                      {d.previous_value} → {d.current_value} ({d.change_pct > 0 ? '+' : ''}{d.change_pct?.toFixed(1)}%)
+                    </Text>
+                  </View>
+                ))}
+                {(!comparison.diffs || comparison.diffs.length === 0) && (
+                  <Text style={styles.noDiff}>No previous report found for comparison.</Text>
+                )}
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.explainBtn}
+                onPress={async () => {
+                  setComparing(true);
+                  try {
+                    const res = await api.get<any>(`/documents/${id}/compare`);
+                    setComparison(res);
+                  } catch {
+                    setComparison({ diffs: [] });
+                  } finally {
+                    setComparing(false);
+                  }
+                }}
+                disabled={comparing}
+              >
+                {comparing ? (
+                  <ActivityIndicator size="small" color={colors.accent} />
+                ) : (
+                  <Text style={styles.explainText}>📊 Compare to previous report</Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
         {/* Explain Button */}
         {doc.classified_as === 'lab_report' && (
           <View style={styles.section}>
@@ -324,5 +379,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textPrimary,
     lineHeight: 22,
+  },
+  compareDate: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    marginBottom: spacing(3),
+  },
+  diffRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: spacing(2),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderTertiary,
+  },
+  diffName: {
+    fontSize: 14,
+    color: colors.textPrimary,
+    flex: 1,
+  },
+  diffChange: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  noDiff: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    fontStyle: 'italic',
   },
 });

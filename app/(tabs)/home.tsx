@@ -26,10 +26,19 @@ import { api } from '../../lib/api';
 
 export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
+  const [medications, setMedications] = useState<any[]>([]);
   const profileId = useAuthStore((s) => s.activeProfileId);
   const documents = useDocumentsStore((s) => s.documents);
   const recent = useDocumentsStore((s) => s.getRecent(3));
   const flagged = useDocumentsStore((s) => s.getFlaggedValues(3));
+
+  React.useEffect(() => {
+    if (profileId) {
+      api.get<{ medications: any[] }>(`/smart-report/${profileId}/medications`)
+        .then((res) => setMedications(res.medications || []))
+        .catch(() => {});
+    }
+  }, [profileId]);
 
   const greeting = () => {
     const h = new Date().getHours();
@@ -103,7 +112,7 @@ export default function HomeScreen() {
         <View style={styles.quickActions}>
           <QuickAction icon="📷" label="Scan" onPress={() => Alert.alert('Coming soon', 'Camera scanner will be available on Day 3.')} />
           <QuickAction icon="📄" label="File" onPress={pickDocument} />
-          <QuickAction icon="🎤" label="Voice" onPress={() => Alert.alert('Coming soon', 'Voice notes will be available on Day 5.')} />
+          <QuickAction icon="🎤" label="Voice" onPress={() => router.push('/timeline/add-note')} />
           <QuickAction icon="📤" label="Share" onPress={() => Alert.alert('Coming soon', 'Share intent handler will be available on Day 3.')} />
         </View>
 
@@ -118,6 +127,21 @@ export default function HomeScreen() {
               AI-synthesized health summary across all your records
             </Text>
           </TouchableOpacity>
+        )}
+
+        {/* Current Medications */}
+        {medications.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>💊 Current Medications</Text>
+            {medications.map((med: any, i: number) => (
+              <View key={i} style={styles.medRow}>
+                <Text style={styles.medName}>{med.name || med.drug_name}</Text>
+                <Text style={styles.medDetail}>
+                  {med.dosage || med.dose}{med.frequency ? ` · ${med.frequency}` : ''}
+                </Text>
+              </View>
+            ))}
+          </View>
         )}
 
         {/* Values to Watch */}
@@ -369,6 +393,21 @@ const styles = StyleSheet.create({
   },
   emergencySub: {
     fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  medRow: {
+    paddingVertical: spacing(3),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderTertiary,
+  },
+  medName: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: colors.textPrimary,
+  },
+  medDetail: {
+    fontSize: 13,
     color: colors.textSecondary,
     marginTop: 2,
   },
