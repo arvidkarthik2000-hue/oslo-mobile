@@ -12,3 +12,4 @@ export { QuickAction } from './QuickAction';
 export { ExtractionReview } from './ExtractionReview';
 export { CriticalValueBanner } from './CriticalValueBanner';
 export { Sparkline } from './Sparkline';
+export { VoiceRecorder } from './VoiceRecorder';

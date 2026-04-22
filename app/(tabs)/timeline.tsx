@@ -126,9 +126,14 @@ export default function TimelineScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Timeline</Text>
-        <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
-          <Text style={styles.searchIcon}>🔍</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', gap: spacing(4) }}>
+          <TouchableOpacity onPress={() => router.push('/timeline/add-note')}>
+            <Text style={styles.searchIcon}>✚</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
+            <Text style={styles.searchIcon}>🔍</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Search */}

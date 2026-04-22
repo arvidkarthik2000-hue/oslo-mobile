@@ -182,14 +182,20 @@ export default function HomeScreen() {
         )}
 
         {/* Subscribe Banner */}
-        <TouchableOpacity style={styles.subscribeBanner}>
+        <TouchableOpacity
+          style={styles.subscribeBanner}
+          onPress={() => router.push('/subscribe')}
+        >
           <Text style={styles.subscribeText}>
             ✨ Upgrade to Family Plan — ₹199/month
           </Text>
         </TouchableOpacity>
 
         {/* Emergency Profile Shortcut */}
-        <TouchableOpacity style={styles.emergencyCard}>
+        <TouchableOpacity
+          style={styles.emergencyCard}
+          onPress={() => router.push('/emergency')}
+        >
           <Text style={styles.emergencyIcon}>🆘</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.emergencyTitle}>Emergency Profile</Text>
