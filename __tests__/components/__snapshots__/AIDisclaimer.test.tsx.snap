@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AIDisclaimer renders correctly 1`] = `
+<View
+  style={
+    {
+      "marginTop": 12,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#888780",
+        "fontSize": 11,
+        "lineHeight": 16,
+        "textAlign": "center",
+      }
+    }
+  >
+    AI-generated information is for reference only and is not a diagnosis or medical advice. Always consult a qualified doctor.
+  </Text>
+</View>
+`;

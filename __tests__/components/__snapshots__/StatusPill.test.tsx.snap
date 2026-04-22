@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusPill renders flag pill 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "alignSelf": "flex-start",
+        "borderRadius": 999,
+        "flexDirection": "row",
+        "paddingHorizontal": 8,
+        "paddingVertical": 2,
+      },
+      {
+        "backgroundColor": "#FCEBEB",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 11,
+          "fontWeight": "500",
+        },
+        {
+          "color": "#A32D2D",
+        },
+      ]
+    }
+  >
+    High
+  </Text>
+</View>
+`;
+
+exports[`StatusPill renders ok pill 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "alignSelf": "flex-start",
+        "borderRadius": 999,
+        "flexDirection": "row",
+        "paddingHorizontal": 8,
+        "paddingVertical": 2,
+      },
+      {
+        "backgroundColor": "#EAF3DE",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 11,
+          "fontWeight": "500",
+        },
+        {
+          "color": "#3B6D11",
+        },
+      ]
+    }
+  >
+    Normal
+  </Text>
+</View>
+`;
+
+exports[`StatusPill renders watch pill 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "alignSelf": "flex-start",
+        "borderRadius": 999,
+        "flexDirection": "row",
+        "paddingHorizontal": 8,
+        "paddingVertical": 2,
+      },
+      {
+        "backgroundColor": "#FAEEDA",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 11,
+          "fontWeight": "500",
+        },
+        {
+          "color": "#BA7517",
+        },
+      ]
+    }
+  >
+    Borderline
+  </Text>
+</View>
+`;

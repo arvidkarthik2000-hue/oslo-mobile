@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionHeader renders text only 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "marginBottom": 8,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#888780",
+        "fontSize": 11,
+        "fontWeight": "500",
+        "letterSpacing": 0.5,
+      }
+    }
+  >
+    RECENT
+  </Text>
+</View>
+`;
+
+exports[`SectionHeader renders with action button 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "marginBottom": 8,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#888780",
+        "fontSize": 11,
+        "fontWeight": "500",
+        "letterSpacing": 0.5,
+      }
+    }
+  >
+    LAB RESULTS
+  </Text>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#0F6E56",
+          "fontSize": 12,
+          "fontWeight": "500",
+        }
+      }
+    >
+      See all
+    </Text>
+  </View>
+</View>
+`;

@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileAvatar renders size 32 correctly 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      {
+        "backgroundColor": "#0F6E56",
+        "borderRadius": 16,
+        "height": 32,
+        "width": 32,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontWeight": "500",
+          "letterSpacing": 0.3,
+        },
+        {
+          "fontSize": 12,
+        },
+      ]
+    }
+  >
+    AK
+  </Text>
+</View>
+`;
+
+exports[`ProfileAvatar renders size 52 with custom color 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      {
+        "backgroundColor": "#BA7517",
+        "borderRadius": 26,
+        "height": 52,
+        "width": 52,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontWeight": "500",
+          "letterSpacing": 0.3,
+        },
+        {
+          "fontSize": 18,
+        },
+      ]
+    }
+  >
+    DR
+  </Text>
+</View>
+`;
+
+exports[`ProfileAvatar truncates initials to 2 chars 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+      },
+      {
+        "backgroundColor": "#0F6E56",
+        "borderRadius": 22,
+        "height": 44,
+        "width": 44,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontWeight": "500",
+          "letterSpacing": 0.3,
+        },
+        {
+          "fontSize": 16,
+        },
+      ]
+    }
+  >
+    AB
+  </Text>
+</View>
+`;

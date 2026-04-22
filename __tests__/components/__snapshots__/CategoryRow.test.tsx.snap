@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CategoryRow renders title only 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "fontWeight": "500",
+        }
+      }
+    >
+      Lab Reports
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`CategoryRow renders with subtitle, count, and icon 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#F7F7F5",
+        "borderRadius": 8,
+        "height": 36,
+        "justifyContent": "center",
+        "marginRight": 12,
+        "width": 36,
+      }
+    }
+  >
+    <Text>
+      🧪
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "fontWeight": "500",
+        }
+      }
+    >
+      Lab Reports
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#5F5E5A",
+          "fontSize": 12,
+          "marginTop": 2,
+        }
+      }
+    >
+      Last: 12 Apr 2026
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "backgroundColor": "#F1EFE8",
+        "borderRadius": 999,
+        "paddingHorizontal": 8,
+        "paddingVertical": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#5F5E5A",
+          "fontSize": 12,
+          "fontWeight": "500",
+        }
+      }
+    >
+      14
+    </Text>
+  </View>
+</View>
+`;

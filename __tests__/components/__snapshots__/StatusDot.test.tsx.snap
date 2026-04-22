@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusDot renders flag status 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#A32D2D",
+      "borderRadius": 3,
+      "height": 6,
+      "width": 6,
+    }
+  }
+/>
+`;
+
+exports[`StatusDot renders ok status 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#3B6D11",
+      "borderRadius": 3,
+      "height": 6,
+      "width": 6,
+    }
+  }
+/>
+`;
+
+exports[`StatusDot renders watch status 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#BA7517",
+      "borderRadius": 3,
+      "height": 6,
+      "width": 6,
+    }
+  }
+/>
+`;

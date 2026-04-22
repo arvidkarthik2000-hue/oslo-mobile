@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TabBar renders with home active 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderTopColor": "rgba(0,0,0,0.08)",
+      "borderTopWidth": 1,
+      "flexDirection": "row",
+      "paddingBottom": 8,
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      🏠
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#0F6E56",
+          },
+        ]
+      }
+    >
+      Home
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      📅
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#888780",
+          },
+        ]
+      }
+    >
+      Timeline
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      📋
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#888780",
+          },
+        ]
+      }
+    >
+      Records
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`TabBar renders with records active 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderTopColor": "rgba(0,0,0,0.08)",
+      "borderTopWidth": 1,
+      "flexDirection": "row",
+      "paddingBottom": 8,
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      🏠
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#888780",
+          },
+        ]
+      }
+    >
+      Home
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      📅
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#888780",
+          },
+        ]
+      }
+    >
+      Timeline
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "opacity": 1,
+        "paddingTop": 8,
+      }
+    }
+  >
+    <Text>
+      📋
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "fontSize": 10,
+            "fontWeight": "500",
+            "marginTop": 2,
+          },
+          {
+            "color": "#0F6E56",
+          },
+        ]
+      }
+    >
+      Records
+    </Text>
+  </View>
+</View>
+`;
