@@ -8,3 +8,7 @@ export { CategoryRow } from './CategoryRow';
 export { AIDisclaimer } from './AIDisclaimer';
 export { TabBar } from './TabBar';
 export type { Tab } from './TabBar';
+export { QuickAction } from './QuickAction';
+export { ExtractionReview } from './ExtractionReview';
+export { CriticalValueBanner } from './CriticalValueBanner';
+export { Sparkline } from './Sparkline';

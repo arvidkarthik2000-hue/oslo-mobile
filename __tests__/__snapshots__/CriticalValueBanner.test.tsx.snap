@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CriticalValueBanner renders with flags 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FCEBEB",
+      "borderColor": "#A32D2D30",
+      "borderRadius": 12,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "gap": 12,
+      "margin": 16,
+      "padding": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "fontSize": 20,
+      }
+    }
+  >
+    ⚠️
+  </Text>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#A32D2D",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 4,
+        }
+      }
+    >
+      Values requiring attention
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#1A1A1A",
+          "fontSize": 13,
+          "marginTop": 2,
+        }
+      }
+    >
+      • 
+      Hemoglobin 10.2 g/dL — below typical range
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#1A1A1A",
+          "fontSize": 13,
+          "marginTop": 2,
+        }
+      }
+    >
+      • 
+      HbA1c 7.8% — above typical range
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#888780",
+          "fontSize": 11,
+          "fontStyle": "italic",
+          "marginTop": 8,
+        }
+      }
+    >
+      Please consult your doctor for clinical interpretation.
+    </Text>
+  </View>
+</View>
+`;

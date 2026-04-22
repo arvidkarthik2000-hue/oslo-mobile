@@ -1,0 +1,578 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExtractionReview renders lab values table 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "borderBottomColor": "rgba(0,0,0,0.08)",
+        "borderBottomWidth": 1,
+        "padding": 20,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#1A1A1A",
+          "fontSize": 18,
+          "fontWeight": "600",
+        }
+      }
+    >
+      Extracted Lab Values
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#5F5E5A",
+          "fontSize": 13,
+          "marginTop": 4,
+        }
+      }
+    >
+      Review the values below. Tap any value to edit.
+    </Text>
+  </View>
+  <RCTScrollView
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          {
+            "backgroundColor": "#F7F7F5",
+            "borderBottomColor": "rgba(0,0,0,0.08)",
+            "borderBottomWidth": 1,
+            "flexDirection": "row",
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#888780",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.5,
+                "textTransform": "uppercase",
+              },
+              {
+                "flex": 3,
+              },
+            ]
+          }
+        >
+          Test
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#888780",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.5,
+                "textTransform": "uppercase",
+              },
+              {
+                "flex": 2,
+                "textAlign": "right",
+              },
+            ]
+          }
+        >
+          Value
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#888780",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.5,
+                "textTransform": "uppercase",
+              },
+              {
+                "flex": 1.5,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Unit
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#888780",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.5,
+                "textTransform": "uppercase",
+              },
+              {
+                "flex": 2,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Ref Range
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#888780",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.5,
+                "textTransform": "uppercase",
+              },
+              {
+                "alignItems": "center",
+                "flex": 1.5,
+              },
+            ]
+          }
+        >
+          Status
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "borderBottomColor": "rgba(0,0,0,0.08)",
+            "borderBottomWidth": 1,
+            "flexDirection": "row",
+            "opacity": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          }
+        }
+      >
+        <Text
+          numberOfLines={2}
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 3,
+              },
+            ]
+          }
+        >
+          Hemoglobin
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 2,
+                "textAlign": "right",
+              },
+              {
+                "fontWeight": "500",
+              },
+            ]
+          }
+        >
+          14.2
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 1.5,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          g/dL
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 2,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          13–17.5
+        </Text>
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flex": 1.5,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "alignSelf": "flex-start",
+                  "borderRadius": 999,
+                  "flexDirection": "row",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 2,
+                },
+                {
+                  "backgroundColor": "#EAF3DE",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "fontSize": 11,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#3B6D11",
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#F7F7F5",
+            "borderBottomColor": "rgba(0,0,0,0.08)",
+            "borderBottomWidth": 1,
+            "flexDirection": "row",
+            "opacity": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          }
+        }
+      >
+        <Text
+          numberOfLines={2}
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 3,
+              },
+            ]
+          }
+        >
+          Fasting Glucose
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 2,
+                "textAlign": "right",
+              },
+              {
+                "fontWeight": "500",
+              },
+            ]
+          }
+        >
+          126
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 1.5,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          mg/dL
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#1A1A1A",
+                "fontSize": 14,
+              },
+              {
+                "flex": 2,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          70–100
+        </Text>
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flex": 1.5,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "alignSelf": "flex-start",
+                  "borderRadius": 999,
+                  "flexDirection": "row",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 2,
+                },
+                {
+                  "backgroundColor": "#FAEEDA",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "fontSize": 11,
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#BA7517",
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+  <View
+    style={
+      {
+        "borderTopColor": "rgba(0,0,0,0.08)",
+        "borderTopWidth": 1,
+        "flexDirection": "row",
+        "gap": 12,
+        "padding": 20,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "borderColor": "rgba(0,0,0,0.15)",
+          "borderRadius": 12,
+          "borderWidth": 1,
+          "flex": 1,
+          "opacity": 1,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#5F5E5A",
+            "fontSize": 15,
+            "fontWeight": "500",
+          }
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#0F6E56",
+          "borderRadius": 12,
+          "flex": 2,
+          "opacity": 1,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#FFFFFF",
+            "fontSize": 15,
+            "fontWeight": "600",
+          }
+        }
+      >
+        Confirm & Save
+      </Text>
+    </View>
+  </View>
+</View>
+`;

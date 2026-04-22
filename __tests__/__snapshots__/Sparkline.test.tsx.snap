@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sparkline renders empty with insufficient data 1`] = `
+<View
+  style={
+    {
+      "height": 24,
+      "width": 80,
+    }
+  }
+/>
+`;
+
+exports[`Sparkline renders with custom dimensions 1`] = `
+<RNSVGSvgView
+  bbHeight={32}
+  bbWidth={120}
+  focusable={false}
+  height={32}
+  style={
+    [
+      {
+        "backgroundColor": "transparent",
+        "borderWidth": 0,
+      },
+      {
+        "flex": 0,
+        "height": 32,
+        "width": 120,
+      },
+    ]
+  }
+  width={120}
+>
+  <RNSVGGroup
+    fill={
+      {
+        "payload": 4278190080,
+        "type": 0,
+      }
+    }
+  >
+    <RNSVGPath
+      d="M2 30 31 23 60 16 89 9 118 2"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeLinecap",
+          "strokeLinejoin",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4279201366,
+          "type": 0,
+        }
+      }
+      strokeLinecap={1}
+      strokeLinejoin={1}
+      strokeWidth={1.2}
+    />
+  </RNSVGGroup>
+</RNSVGSvgView>
+`;
+
+exports[`Sparkline renders with data 1`] = `
+<RNSVGSvgView
+  bbHeight={24}
+  bbWidth={80}
+  focusable={false}
+  height={24}
+  style={
+    [
+      {
+        "backgroundColor": "transparent",
+        "borderWidth": 0,
+      },
+      {
+        "flex": 0,
+        "height": 24,
+        "width": 80,
+      },
+    ]
+  }
+  width={80}
+>
+  <RNSVGGroup
+    fill={
+      {
+        "payload": 4278190080,
+        "type": 0,
+      }
+    }
+  >
+    <RNSVGPath
+      d="M2 22 17.200000000000003 14 32.400000000000006 18 47.6 6 62.800000000000004 10 78 2"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeLinecap",
+          "strokeLinejoin",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4279201366,
+          "type": 0,
+        }
+      }
+      strokeLinecap={1}
+      strokeLinejoin={1}
+      strokeWidth={1.2}
+    />
+  </RNSVGGroup>
+</RNSVGSvgView>
+`;
