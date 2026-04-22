@@ -11,13 +11,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  Share,
+  Alert,
 } from 'react-native';
 import { router } from 'expo-router';
 import { colors, spacing, radius } from '../components/design-tokens';
 import { StatusDot } from '../components';
 import { useAuthStore } from '../store/auth';
 import { api } from '../lib/api';
+import { generateAndSharePDF } from '../lib/pdf-generator';
 
 interface Section {
   system: string;
@@ -72,12 +73,17 @@ export default function SmartReportScreen() {
   const handleShare = async () => {
     if (!markdown) return;
     try {
-      await Share.share({
-        message: markdown,
-        title: 'OSLO Smart Report',
+      await generateAndSharePDF({
+        patientName: 'Demo User',
+        patientDOB: '1978-03-15',
+        bloodGroup: 'O+',
+        generatedAt: new Date().toISOString(),
+        reportMarkdown: markdown,
+        sections: sections.length > 0 ? sections : undefined,
       });
-    } catch (err) {
-      console.error('Share failed:', err);
+    } catch (err: any) {
+      console.error('PDF generation failed:', err);
+      Alert.alert('Share Failed', 'Could not generate PDF. Please try again.');
     }
   };
 

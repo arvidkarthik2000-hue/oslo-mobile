@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { colors, spacing, radius } from '../../components/design-tokens';
-import { FilterChip, StatusDot, Sparkline } from '../../components';
+import { FilterChip, StatusDot, Sparkline, OnboardingTooltip } from '../../components';
 import { useAuthStore } from '../../store/auth';
 import { api } from '../../lib/api';
 
@@ -100,6 +100,11 @@ export default function TrendsScreen() {
           />
         ))}
       </ScrollView>
+
+      <OnboardingTooltip
+        id="trends_intro"
+        text="Track how your lab values change over time. Filter by body system to focus on what matters."
+      />
 
       {loading ? (
         <View style={styles.center}>

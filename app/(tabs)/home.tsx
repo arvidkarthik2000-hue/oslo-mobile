@@ -135,7 +135,7 @@ export default function HomeScreen() {
                       : ''}
                   </Text>
                 </View>
-                <StatusPill status={flagToStatus(t.flag)} />
+                <StatusPill status={flagToStatus(t.flag)} text={t.flag === 'critical' ? 'Critical' : t.flag === 'flag' ? 'High' : t.flag === 'watch' ? 'Watch' : 'Normal'} />
               </View>
             ))}
           </View>

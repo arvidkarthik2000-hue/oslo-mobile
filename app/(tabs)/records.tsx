@@ -76,7 +76,7 @@ export default function RecordsScreen() {
               return (
                 <CategoryRow
                   key={cat.key}
-                  label={`${cat.icon}  ${cat.label}`}
+                  title={`${cat.icon}  ${cat.label}`}
                   count={count}
                   onPress={() => {
                     router.push({

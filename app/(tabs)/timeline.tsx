@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { colors, spacing, radius } from '../../components/design-tokens';
-import { FilterChip } from '../../components';
+import { FilterChip, OnboardingTooltip } from '../../components';
 import { useAuthStore } from '../../store/auth';
 import { api } from '../../lib/api';
 
@@ -150,6 +150,12 @@ export default function TimelineScreen() {
           />
         </View>
       )}
+
+      {/* Onboarding tooltip */}
+      <OnboardingTooltip
+        id="timeline_intro"
+        text="Your health timeline shows every lab, prescription, and note in one place. Tap any event to see details."
+      />
 
       {/* Filter chips */}
       <View style={styles.filters}>

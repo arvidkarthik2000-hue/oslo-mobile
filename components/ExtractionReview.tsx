@@ -123,7 +123,7 @@ export function ExtractionReview({
             </Text>
 
             <View style={[styles.colStatus]}>
-              <StatusPill status={flagToStatus(test.flag)} />
+              <StatusPill status={flagToStatus(test.flag)} text={test.flag === 'critical' ? 'Critical' : test.flag === 'flag' ? 'High' : test.flag === 'watch' ? 'Watch' : 'Normal'} />
             </View>
           </TouchableOpacity>
         ))}

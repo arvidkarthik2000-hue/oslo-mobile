@@ -153,7 +153,7 @@ export default function DocumentDetailScreen() {
                     : '—'}
                 </Text>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                  <StatusPill status={flagToStatus(t.flag)} />
+                  <StatusPill status={flagToStatus(t.flag)} text={t.flag === 'critical' ? 'Critical' : t.flag === 'flag' ? 'High' : t.flag === 'watch' ? 'Watch' : 'Normal'} />
                 </View>
               </View>
             ))}

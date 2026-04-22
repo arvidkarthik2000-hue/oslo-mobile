@@ -302,7 +302,9 @@ exports[`ExtractionReview renders lab values table 1`] = `
                   },
                 ]
               }
-            />
+            >
+              Normal
+            </Text>
           </View>
         </View>
       </View>
@@ -453,7 +455,9 @@ exports[`ExtractionReview renders lab values table 1`] = `
                   },
                 ]
               }
-            />
+            >
+              Watch
+            </Text>
           </View>
         </View>
       </View>
