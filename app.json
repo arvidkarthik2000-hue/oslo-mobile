@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "OSLO",
+    "slug": "oslo-health",
+    "version": "1.0.0",
+    "scheme": "oslo",
+    "platforms": ["android"],
+    "android": {
+      "package": "com.oslo.health",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F6E56"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-camera", {"cameraPermission": "OSLO needs camera access to photograph your health documents."}],
+      ["expo-image-picker", {"photosPermission": "OSLO needs photo library access to import your health documents."}]
+    ],
+    "experiments": { "typedRoutes": true }
+  }
+}
