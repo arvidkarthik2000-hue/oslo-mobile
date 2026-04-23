@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { colors, spacing, radius } from '../../components/design-tokens';
 import { QuickAction } from '../../components/QuickAction';
 import { StatusPill } from '../../components/StatusPill';
@@ -80,6 +81,41 @@ export default function HomeScreen() {
     }
   };
 
+  const scanDocument = async () => {
+    try {
+      const permission = await ImagePicker.requestCameraPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert(
+          'Camera Permission',
+          'Camera access is needed to scan documents. Please enable it in Settings.',
+        );
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ['images'],
+        quality: 0.8,
+      });
+
+      if (result.canceled) return;
+
+      const asset = result.assets[0];
+      if (!asset) return;
+
+      router.push({
+        pathname: '/upload/review',
+        params: {
+          uri: asset.uri,
+          name: `scan_${Date.now()}.jpg`,
+          mimeType: asset.mimeType || 'image/jpeg',
+          size: String(asset.fileSize || 0),
+        },
+      });
+    } catch (err) {
+      Alert.alert('Error', 'Could not open camera. Please try again.');
+    }
+  };
+
   const flagToStatus = (flag?: string) => {
     switch (flag) {
       case 'watch': return 'watch' as const;
@@ -110,7 +146,7 @@ export default function HomeScreen() {
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
-          <QuickAction icon="📷" label="Scan" onPress={() => Alert.alert('Coming soon', 'Camera scanner will be available on Day 3.')} />
+          <QuickAction icon="📷" label="Scan" onPress={scanDocument} />
           <QuickAction icon="📄" label="File" onPress={pickDocument} />
           <QuickAction icon="🎤" label="Voice" onPress={() => router.push('/timeline/add-note')} />
           <QuickAction icon="📤" label="Share" onPress={() => Alert.alert('Coming soon', 'Share intent handler will be available on Day 3.')} />
