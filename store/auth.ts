@@ -7,9 +7,11 @@ interface AuthState {
   refreshToken: string | null;
   ownerId: string | null;
   activeProfileId: string | null;
+  profileName: string | null;
   isNewUser: boolean;
   setTokens: (access: string, refresh: string, ownerId: string) => void;
   setActiveProfile: (profileId: string) => void;
+  setProfileName: (name: string) => void;
   setIsNewUser: (v: boolean) => void;
   logout: () => void;
 }
@@ -21,10 +23,12 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: null,
       ownerId: null,
       activeProfileId: null,
+      profileName: null,
       isNewUser: false,
       setTokens: (access, refresh, ownerId) =>
         set({ accessToken: access, refreshToken: refresh, ownerId }),
       setActiveProfile: (profileId) => set({ activeProfileId: profileId }),
+      setProfileName: (name) => set({ profileName: name }),
       setIsNewUser: (v) => set({ isNewUser: v }),
       logout: () =>
         set({

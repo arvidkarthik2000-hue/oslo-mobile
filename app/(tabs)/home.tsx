@@ -15,6 +15,7 @@ import {
 import { router } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
+import * as Sharing from 'expo-sharing';
 import { colors, spacing, radius } from '../../components/design-tokens';
 import { QuickAction } from '../../components/QuickAction';
 import { StatusPill } from '../../components/StatusPill';
@@ -29,6 +30,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [medications, setMedications] = useState<any[]>([]);
   const profileId = useAuthStore((s) => s.activeProfileId);
+  const profileName = useAuthStore((s) => s.profileName);
   const documents = useDocumentsStore((s) => s.documents);
   const recent = useDocumentsStore((s) => s.getRecent(3));
   const flagged = useDocumentsStore((s) => s.getFlaggedValues(3));
@@ -141,7 +143,7 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.greeting}>{greeting()}</Text>
-          <Text style={styles.name}>Demo User</Text>
+          <Text style={styles.name}>{profileName || 'User'}</Text>
         </View>
 
         {/* Quick Actions */}
@@ -149,7 +151,7 @@ export default function HomeScreen() {
           <QuickAction icon="📷" label="Scan" onPress={scanDocument} />
           <QuickAction icon="📄" label="File" onPress={pickDocument} />
           <QuickAction icon="🎤" label="Voice" onPress={() => router.push('/timeline/add-note')} />
-          <QuickAction icon="📤" label="Share" onPress={() => Alert.alert('Coming soon', 'Share intent handler will be available on Day 3.')} />
+          <QuickAction icon="📤" label="Share" onPress={() => router.push('/smart-report')} />
         </View>
 
         {/* Smart Report CTA */}

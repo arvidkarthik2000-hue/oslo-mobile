@@ -39,6 +39,9 @@ export async function initializeDemoUser(): Promise<boolean> {
     setActiveProfile(data.profile_id);
     console.log('Demo user initialized:', data.owner_id);
 
+    // Fetch profile name for greeting
+    await fetchProfileName();
+
     // Sync backend demo data to local store (backend seeds on first dev-create)
     await syncBackendToLocal();
 
@@ -46,6 +49,24 @@ export async function initializeDemoUser(): Promise<boolean> {
   } catch (err) {
     console.error('dev-create network error:', err);
     return false;
+  }
+}
+
+/**
+ * Fetch the active profile's name from backend and store it.
+ */
+async function fetchProfileName(): Promise<void> {
+  try {
+    const res = await api.get<{ profiles: Array<{ name: string; relationship: string }> }>(
+      '/profiles'
+    );
+    const profiles = res.profiles || [];
+    const selfProfile = profiles.find((p) => p.relationship === 'self') || profiles[0];
+    if (selfProfile?.name) {
+      useAuthStore.getState().setProfileName(selfProfile.name);
+    }
+  } catch (err) {
+    console.warn('Failed to fetch profile name:', err);
   }
 }
 
