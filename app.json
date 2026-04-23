@@ -4,7 +4,9 @@
     "slug": "oslo-health",
     "version": "1.0.0",
     "scheme": "oslo",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "android": {
       "package": "com.oslo.health",
       "adaptiveIcon": {
@@ -13,15 +15,38 @@
       },
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.READ_EXTERNAL_STORAGE"
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-camera", {"cameraPermission": "OSLO needs camera access to photograph your health documents."}],
-      ["expo-image-picker", {"photosPermission": "OSLO needs photo library access to import your health documents."}]
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "OSLO needs camera access to photograph your health documents."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "OSLO needs photo library access to import your health documents."
+        }
+      ],
+      "expo-asset"
     ],
-    "experiments": { "typedRoutes": true }
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "38463b93-62bb-4f88-9f06-9bb906642faf"
+      }
+    },
+    "owner": "arvindkarthik"
   }
 }
