@@ -1,8 +1,7 @@
 /**
- * VoiceRecorder — record audio up to 2 minutes.
- * Uses expo-av for recording.
+ * VoiceRecorder — record audio up to 2 minutes using expo-av.
  */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +9,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import { Audio } from 'expo-av';
 import { colors, spacing, radius } from './design-tokens';
 
 interface VoiceRecorderProps {
@@ -23,19 +23,47 @@ export function VoiceRecorder({
   onCancel,
   maxDurationSec = 120,
 }: VoiceRecorderProps) {
-  const [recording, setRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const recordingRef = useRef<Audio.Recording | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup on unmount
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (recordingRef.current) {
+        recordingRef.current.stopAndUnloadAsync().catch(() => {});
+      }
+    };
+  }, []);
 
   const startRecording = async () => {
     try {
-      // In a real build, we'd use expo-av's Audio.Recording
-      // For POC, simulate recording
-      setRecording(true);
+      const { granted } = await Audio.requestPermissionsAsync();
+      if (!granted) {
+        Alert.alert(
+          'Microphone Permission',
+          'Microphone access is needed to record voice notes. Please enable it in Settings.'
+        );
+        return;
+      }
+
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+      recordingRef.current = recording;
+      setIsRecording(true);
       setElapsed(0);
+
       timerRef.current = setInterval(() => {
         setElapsed((prev) => {
-          if (prev >= maxDurationSec) {
+          if (prev >= maxDurationSec - 1) {
             stopRecording();
             return prev;
           }
@@ -43,6 +71,7 @@ export function VoiceRecorder({
         });
       }, 1000);
     } catch (err) {
+      console.error('Failed to start recording:', err);
       Alert.alert('Error', 'Could not start recording. Check microphone permissions.');
     }
   };
@@ -52,11 +81,32 @@ export function VoiceRecorder({
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    setRecording(false);
-    // In real build, get the recording URI from expo-av
-    // For POC, simulate with a fake URI
-    const fakeUri = `file://recording_${Date.now()}.m4a`;
-    onRecordingComplete(fakeUri, elapsed);
+
+    const recording = recordingRef.current;
+    if (!recording) {
+      setIsRecording(false);
+      return;
+    }
+
+    try {
+      await recording.stopAndUnloadAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      });
+      const uri = recording.getURI();
+      recordingRef.current = null;
+      setIsRecording(false);
+
+      if (uri) {
+        onRecordingComplete(uri, elapsed);
+      } else {
+        Alert.alert('Error', 'Recording failed — no audio file was created.');
+      }
+    } catch (err) {
+      console.error('Failed to stop recording:', err);
+      setIsRecording(false);
+      Alert.alert('Error', 'Could not save recording.');
+    }
   };
 
   const formatTime = (secs: number) => {
@@ -70,7 +120,7 @@ export function VoiceRecorder({
       <Text style={styles.timer}>{formatTime(elapsed)}</Text>
       <Text style={styles.limit}>Max {Math.floor(maxDurationSec / 60)} minutes</Text>
 
-      {recording ? (
+      {isRecording ? (
         <View style={styles.controls}>
           <View style={styles.pulseIndicator}>
             <Text style={styles.pulseText}>●</Text>

@@ -68,6 +68,12 @@ export default function HomeScreen() {
       const file = result.assets[0];
       if (!file) return;
 
+      // File size validation
+      if (file.size && file.size > 10 * 1024 * 1024) {
+        Alert.alert('File too large', 'Please select a file under 10MB.');
+        return;
+      }
+
       // Navigate to upload flow with file info
       router.push({
         pathname: '/upload/review',

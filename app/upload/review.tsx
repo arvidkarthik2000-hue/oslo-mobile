@@ -1,9 +1,11 @@
 /**
  * Upload Review screen — after picking a file:
- * 1. Creates document record on backend
- * 2. Triggers finalize (classify + extract)
- * 3. Shows extraction review
- * 4. User confirms → saved to store + navigates home
+ * 1. Validates file size
+ * 2. Creates document record on backend
+ * 3. Uploads file to backend storage
+ * 4. Triggers finalize (classify + extract + embed)
+ * 5. Shows extraction review
+ * 6. User confirms → saved to store + navigates home
  */
 import React, { useEffect, useState } from 'react';
 import {
@@ -23,7 +25,12 @@ import { useDocumentsStore } from '../../store/documents';
 import type { LabTest } from '../../store/documents';
 import { api } from '../../lib/api';
 
-type Phase = 'uploading' | 'processing' | 'review' | 'saving' | 'error';
+const BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:8000';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+type Phase = 'uploading' | 'storing' | 'processing' | 'review' | 'saving' | 'error';
 
 export default function UploadReviewScreen() {
   const params = useLocalSearchParams<{
@@ -51,6 +58,15 @@ export default function UploadReviewScreen() {
       setPhase('error');
       return;
     }
+
+    // Client-side file size check
+    const fileSize = parseInt(params.size || '0', 10);
+    if (fileSize > MAX_FILE_SIZE) {
+      setError(`File is too large (${(fileSize / 1024 / 1024).toFixed(1)}MB). Please select a file under 10MB.`);
+      setPhase('error');
+      return;
+    }
+
     runPipeline();
   }, []);
 
@@ -74,9 +90,36 @@ export default function UploadReviewScreen() {
       const docId = createRes.document_id;
       setDocumentId(docId);
 
-      // Step 2: Finalize (classify + extract)
-      // In POC, we skip actual S3 upload — pass the local URI as s3_key
-      // Backend uses mocks anyway until Day 3
+      // Step 2: Upload actual file to backend storage
+      setPhase('storing');
+      const token = useAuthStore.getState().accessToken;
+      const formData = new FormData();
+      formData.append('file', {
+        uri: params.uri,
+        name: params.name || `upload_${Date.now()}`,
+        type: params.mimeType || 'application/octet-stream',
+      } as any);
+
+      const uploadRes = await fetch(
+        `${BASE_URL}/documents/${docId}/upload-file`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!uploadRes.ok) {
+        const errBody = await uploadRes.json().catch(() => ({}));
+        throw new Error(errBody.detail || `Upload failed (${uploadRes.status})`);
+      }
+
+      const { file_url } = await uploadRes.json();
+      const publicFileUrl = `${BASE_URL}${file_url}`;
+
+      // Step 3: Finalize (classify + extract + embed) with the public URL
       setPhase('processing');
       const finalizeRes = await api.post<{
         document_id: string;
@@ -85,15 +128,15 @@ export default function UploadReviewScreen() {
         extraction_id: string | null;
         processing_status: string;
       }>(`/documents/${docId}/finalize`, {
-        s3_key: params.uri || `demo/${params.name}`,
+        s3_key: file_url,
         sha256: null,
-        image_urls: [params.uri || `demo/${params.name}`],
+        image_urls: [publicFileUrl],
       });
 
       setClassifiedAs(finalizeRes.classified_as || 'other');
       setExtractionId(finalizeRes.extraction_id || null);
 
-      // Step 3: Fetch document detail to get extraction data
+      // Step 4: Fetch document detail to get extraction data
       const detail = await api.get<{
         document_id: string;
         provider_name: string | null;
@@ -170,17 +213,19 @@ export default function UploadReviewScreen() {
     router.back();
   };
 
-  if (phase === 'uploading' || phase === 'processing' || phase === 'saving') {
+  if (phase === 'uploading' || phase === 'storing' || phase === 'processing' || phase === 'saving') {
+    const phaseMessages: Record<string, string> = {
+      uploading: 'Creating document record...',
+      storing: 'Uploading file to secure storage...',
+      processing: 'Analyzing your document with AI...\nThis may take 15–20 seconds.',
+      saving: 'Saving...',
+    };
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.center}>
           <ActivityIndicator size="large" color={colors.accent} />
           <Text style={styles.phaseText}>
-            {phase === 'uploading'
-              ? 'Creating document record...'
-              : phase === 'processing'
-                ? 'Classifying and extracting...'
-                : 'Saving...'}
+            {phaseMessages[phase]}
           </Text>
           <Text style={styles.fileName}>{params.name}</Text>
         </View>
@@ -276,6 +321,8 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: spacing(4),
     fontWeight: '500',
+    textAlign: 'center',
+    lineHeight: 24,
   },
   fileName: {
     fontSize: 13,

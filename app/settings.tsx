@@ -1,7 +1,7 @@
 /**
- * Settings screen — Profile, Privacy (placeholder), About, Demo Reset.
+ * Settings screen — Profile (with save to backend), Privacy (placeholder), About, Demo Reset.
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,18 +11,68 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { colors, spacing, radius } from '../components/design-tokens';
 import { useAuthStore } from '../store/auth';
 import { useDocumentsStore } from '../store/documents';
+import { api } from '../lib/api';
 
 export default function SettingsScreen() {
   const logout = useAuthStore((s) => s.logout);
   const clearDocs = useDocumentsStore((s) => s.clear);
+  const profileId = useAuthStore((s) => s.activeProfileId);
+  const setProfileName = useAuthStore((s) => s.setProfileName);
+
   const [name, setName] = useState('Demo User');
   const [dob, setDob] = useState('1978-03-15');
   const [bloodGroup, setBloodGroup] = useState('O+');
+  const [sex, setSex] = useState('M');
+  const [saving, setSaving] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+
+  // Load current profile data from backend
+  useEffect(() => {
+    if (!profileId) {
+      setLoadingProfile(false);
+      return;
+    }
+    api
+      .get<{ name: string; dob: string; blood_group: string; sex: string }>(
+        `/profiles/${profileId}`
+      )
+      .then((profile) => {
+        setName(profile.name || 'Demo User');
+        setDob(profile.dob || '1978-03-15');
+        setBloodGroup(profile.blood_group || 'O+');
+        setSex(profile.sex || 'M');
+      })
+      .catch(() => {
+        // Use defaults
+      })
+      .finally(() => setLoadingProfile(false));
+  }, [profileId]);
+
+  const handleSaveProfile = async () => {
+    if (!profileId) return;
+    setSaving(true);
+    try {
+      await api.patch(`/profiles/${profileId}`, {
+        name: name.trim() || 'User',
+        dob,
+        blood_group: bloodGroup,
+        sex,
+      });
+      // Update local store so greeting reflects new name
+      setProfileName(name.trim() || 'User');
+      Alert.alert('Saved', 'Profile updated successfully.');
+    } catch (err: any) {
+      Alert.alert('Error', err?.message || 'Could not save profile.');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleResetDemo = () => {
     Alert.alert(
@@ -54,7 +104,6 @@ export default function SettingsScreen() {
           style: 'destructive',
           onPress: () => {
             clearDocs();
-            // Keep auth — just clear documents
             Alert.alert('Done', 'All documents cleared.');
           },
         },
@@ -75,36 +124,67 @@ export default function SettingsScreen() {
         {/* Profile Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Profile</Text>
-          <View style={styles.field}>
-            <Text style={styles.label}>Name</Text>
-            <TextInput
-              style={styles.input}
-              value={name}
-              onChangeText={setName}
-              placeholder="Your name"
-              placeholderTextColor={colors.textTertiary}
-            />
-          </View>
-          <View style={styles.field}>
-            <Text style={styles.label}>Date of Birth</Text>
-            <TextInput
-              style={styles.input}
-              value={dob}
-              onChangeText={setDob}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={colors.textTertiary}
-            />
-          </View>
-          <View style={styles.field}>
-            <Text style={styles.label}>Blood Group</Text>
-            <TextInput
-              style={styles.input}
-              value={bloodGroup}
-              onChangeText={setBloodGroup}
-              placeholder="e.g. O+, A-, B+"
-              placeholderTextColor={colors.textTertiary}
-            />
-          </View>
+          {loadingProfile ? (
+            <ActivityIndicator size="small" color={colors.accent} style={{ padding: spacing(4) }} />
+          ) : (
+            <>
+              <View style={styles.field}>
+                <Text style={styles.label}>Name</Text>
+                <TextInput
+                  style={styles.input}
+                  value={name}
+                  onChangeText={setName}
+                  placeholder="Your name"
+                  placeholderTextColor={colors.textTertiary}
+                />
+              </View>
+              <View style={styles.field}>
+                <Text style={styles.label}>Date of Birth</Text>
+                <TextInput
+                  style={styles.input}
+                  value={dob}
+                  onChangeText={setDob}
+                  placeholder="YYYY-MM-DD"
+                  placeholderTextColor={colors.textTertiary}
+                />
+              </View>
+              <View style={styles.field}>
+                <Text style={styles.label}>Sex</Text>
+                <View style={styles.segmentRow}>
+                  {['M', 'F', 'O'].map((s) => (
+                    <TouchableOpacity
+                      key={s}
+                      style={[styles.segmentBtn, sex === s && styles.segmentActive]}
+                      onPress={() => setSex(s)}
+                    >
+                      <Text style={[styles.segmentText, sex === s && styles.segmentTextActive]}>
+                        {s === 'M' ? 'Male' : s === 'F' ? 'Female' : 'Other'}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+              <View style={styles.field}>
+                <Text style={styles.label}>Blood Group</Text>
+                <TextInput
+                  style={styles.input}
+                  value={bloodGroup}
+                  onChangeText={setBloodGroup}
+                  placeholder="e.g. O+, A-, B+"
+                  placeholderTextColor={colors.textTertiary}
+                />
+              </View>
+              <TouchableOpacity
+                style={[styles.saveBtn, saving && { opacity: 0.5 }]}
+                onPress={handleSaveProfile}
+                disabled={saving}
+              >
+                <Text style={styles.saveBtnText}>
+                  {saving ? 'Saving...' : '💾 Save Profile'}
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
 
         {/* Privacy Section */}
@@ -206,6 +286,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(4),
     fontSize: 15,
     color: colors.textPrimary,
+  },
+  segmentRow: {
+    flexDirection: 'row',
+    gap: spacing(2),
+    marginTop: spacing(1),
+  },
+  segmentBtn: {
+    flex: 1,
+    paddingVertical: spacing(2.5),
+    borderRadius: radius.md,
+    backgroundColor: colors.bgSecondary,
+    alignItems: 'center',
+  },
+  segmentActive: {
+    backgroundColor: colors.accent,
+  },
+  segmentText: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    fontWeight: '500',
+  },
+  segmentTextActive: {
+    color: colors.textOnDark,
+  },
+  saveBtn: {
+    padding: spacing(4),
+    borderRadius: radius.lg,
+    backgroundColor: colors.accent,
+    alignItems: 'center',
+    marginTop: spacing(3),
+  },
+  saveBtnText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.textOnDark,
   },
   row: {
     flexDirection: 'row',

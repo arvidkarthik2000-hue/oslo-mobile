@@ -174,7 +174,12 @@ export default function TimelineScreen() {
         disabled={summarizing}
       >
         {summarizing ? (
-          <ActivityIndicator size="small" color={colors.accent} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <ActivityIndicator size="small" color={colors.accent} />
+            <Text style={[styles.summarizeBtnText, { color: colors.textSecondary }]}>
+              Generating summary... ~20s
+            </Text>
+          </View>
         ) : (
           <Text style={styles.summarizeBtnText}>🧠 Summarize my health</Text>
         )}
