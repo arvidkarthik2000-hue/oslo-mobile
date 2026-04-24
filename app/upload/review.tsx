@@ -113,8 +113,10 @@ export default function UploadReviewScreen() {
         throw new Error(errBody.detail || `Upload failed (${uploadRes.status})`);
       }
 
-      const { file_url } = await uploadRes.json();
-      const publicFileUrl = `${getApiUrl()}${file_url}`;
+      const uploadData = await uploadRes.json();
+      const s3Key = uploadData.s3_key;
+      const fileUrl = uploadData.file_url;
+      const publicFileUrl = `${getApiUrl()}${fileUrl}`;
 
       // Step 3: Finalize (classify + extract + embed) with the public URL
       setPhase('processing');
@@ -125,8 +127,8 @@ export default function UploadReviewScreen() {
         extraction_id: string | null;
         processing_status: string;
       }>(`/documents/${docId}/finalize`, {
-        s3_key: file_url,
-        sha256: null,
+        s3_key: s3Key,
+        sha256: '',
         image_urls: [publicFileUrl],
       });
 
