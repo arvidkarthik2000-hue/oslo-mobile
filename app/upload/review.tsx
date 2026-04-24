@@ -114,7 +114,7 @@ export default function UploadReviewScreen() {
       }
 
       const uploadData = await uploadRes.json();
-      const s3Key = uploadData.s3_key;
+      const s3Key = uploadData.s3_key || uploadData.file_url?.replace(/^\//, '') || '';
       const fileUrl = uploadData.file_url;
       const publicFileUrl = `${getApiUrl()}${fileUrl}`;
 

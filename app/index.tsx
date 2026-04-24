@@ -6,6 +6,7 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { Redirect } from 'expo-router';
 import { useAuthStore } from '../store/auth';
 import { initializeDemoUser } from '../lib/init';
+import { initApiUrl } from '../lib/api';
 import { colors, spacing } from '../components/design-tokens';
 
 export default function Index() {
@@ -17,6 +18,7 @@ export default function Index() {
     if (token) return;
 
     (async () => {
+      await initApiUrl();
       const ok = await initializeDemoUser();
       if (!ok) {
         setError('Could not connect to server. Check your network and API URL.');
