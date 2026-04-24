@@ -4,17 +4,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing } from './design-tokens';
+import { getApiUrl } from '../lib/api';
 
 export function OfflineBanner() {
   const [offline, setOffline] = useState(false);
 
   useEffect(() => {
-    // Simple connectivity check — ping the API periodically
+    // Simple connectivity check — ping the API periodically using runtime URL
     const check = async () => {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 3000);
-        const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:8000';
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const BASE_URL = getApiUrl();
         await fetch(`${BASE_URL}/health`, { signal: controller.signal });
         clearTimeout(timeout);
         setOffline(false);
@@ -23,9 +24,10 @@ export function OfflineBanner() {
       }
     };
 
-    check();
+    // Delay first check to let initApiUrl finish loading from AsyncStorage
+    const initialDelay = setTimeout(check, 2000);
     const interval = setInterval(check, 30000);
-    return () => clearInterval(interval);
+    return () => { clearTimeout(initialDelay); clearInterval(interval); };
   }, []);
 
   if (!offline) return null;
