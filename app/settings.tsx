@@ -79,13 +79,18 @@ export default function SettingsScreen() {
   const handleResetDemo = () => {
     Alert.alert(
       'Reset to Demo State',
-      'This will clear all data and recreate the demo profile. Continue?',
+      'This will clear all server data and recreate the demo profile. Continue?',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Reset',
           style: 'destructive',
-          onPress: () => {
+          onPress: async () => {
+            try {
+              await api.post('/auth/demo-reset', {});
+            } catch {
+              // Server may be unavailable — continue with local reset
+            }
             clearDocs();
             logout();
             router.replace('/');

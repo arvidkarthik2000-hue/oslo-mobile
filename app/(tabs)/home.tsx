@@ -34,11 +34,26 @@ export default function HomeScreen() {
   const documents = useDocumentsStore((s) => s.documents);
   const recent = useDocumentsStore((s) => s.getRecent(3));
   const flagged = useDocumentsStore((s) => s.getFlaggedValues(3));
+  const [apiFlagged, setApiFlagged] = useState<LabTest[]>([]);
 
   React.useEffect(() => {
     if (profileId) {
       api.get<{ medications: any[] }>(`/smart-report/${profileId}/medications`)
         .then((res) => setMedications(res.medications || []))
+        .catch(() => {});
+      api.get<{ values: any[] }>(`/smart-report/${profileId}/flagged-values`)
+        .then((res) => {
+          const mapped = (res.values || []).map((v: any) => ({
+            test_name: v.test_name,
+            value: v.value_text,
+            value_num: v.value_num,
+            unit: v.unit,
+            flag: v.flag,
+            ref_low: v.ref_low,
+            ref_high: v.ref_high,
+          }));
+          setApiFlagged(mapped);
+        })
         .catch(() => {});
     }
   }, [profileId]);
@@ -127,10 +142,13 @@ export default function HomeScreen() {
   const flagToStatus = (flag?: string) => {
     switch (flag) {
       case 'watch': return 'watch' as const;
-      case 'flag': case 'critical': return 'flag' as const;
+      case 'flag': case 'critical': case 'above': case 'below': return 'flag' as const;
       default: return 'ok' as const;
     }
   };
+
+  // Prefer API-fetched flagged values over local Zustand store
+  const displayFlagged = apiFlagged.length > 0 ? apiFlagged : flagged;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -189,21 +207,23 @@ export default function HomeScreen() {
         )}
 
         {/* Values to Watch */}
-        {flagged.length > 0 && (
+        {displayFlagged.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Values to Watch</Text>
-            {flagged.map((t: LabTest, i: number) => (
+            {displayFlagged.map((t: LabTest, i: number) => (
               <View key={i} style={styles.watchRow}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.watchName}>{t.test_name}</Text>
-                  <Text style={styles.watchValue}>
-                    {t.value_num} {t.unit}
-                    {t.ref_low != null && t.ref_high != null
-                      ? `  (ref: ${t.ref_low}–${t.ref_high})`
-                      : ''}
+                <View style={{ flex: 1, flexShrink: 1 }}>
+                  <Text style={styles.watchName} numberOfLines={1} ellipsizeMode="tail">{t.test_name}</Text>
+                  <Text style={styles.watchValue} numberOfLines={1}>
+                    {t.value || t.value_num || '—'} {t.unit}
+                    {t.reference_range
+                      ? `  (ref: ${t.reference_range})`
+                      : t.ref_low != null && t.ref_high != null
+                        ? `  (ref: ${t.ref_low}–${t.ref_high})`
+                        : ''}
                   </Text>
                 </View>
-                <StatusPill status={flagToStatus(t.flag)} text={t.flag === 'critical' ? 'Critical' : t.flag === 'flag' ? 'High' : t.flag === 'watch' ? 'Watch' : 'Normal'} />
+                <StatusPill status={flagToStatus(t.flag)} text={t.flag === 'critical' ? 'Critical' : t.flag === 'above' || t.flag === 'flag' ? 'High' : t.flag === 'below' ? 'Low' : t.flag === 'watch' ? 'Watch' : 'Normal'} />
               </View>
             ))}
           </View>
@@ -231,13 +251,13 @@ export default function HomeScreen() {
                       ? '💊'
                       : '📋'}
                 </Text>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.recentTitle}>
+                <View style={{ flex: 1, flexShrink: 1 }}>
+                  <Text style={styles.recentTitle} numberOfLines={1} ellipsizeMode="tail">
                     {(doc.classified_as || 'Document')
                       .replace(/_/g, ' ')
                       .replace(/^\w/, (c: string) => c.toUpperCase())}
                   </Text>
-                  <Text style={styles.recentSub}>
+                  <Text style={styles.recentSub} numberOfLines={1} ellipsizeMode="tail">
                     {doc.provider_name || doc.file_name || 'Uploaded'} ·{' '}
                     {new Date(doc.uploaded_at).toLocaleDateString()}
                   </Text>

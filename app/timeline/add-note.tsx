@@ -48,11 +48,17 @@ export default function AddNoteScreen() {
     if (!profileId) return;
     setSaving(true);
     try {
-      await api.post('/timeline/voice-note', {
+      const res = await api.post<{ event_id: string; transcript?: string }>('/timeline/voice-note', {
         profile_id: profileId,
         audio_url: uri,
       });
-      router.back();
+      Alert.alert(
+        '🎤 Voice Note Saved',
+        res.transcript && !res.transcript.startsWith('[')
+          ? `Transcript: "${res.transcript.slice(0, 120)}${res.transcript.length > 120 ? '...' : ''}"`
+          : 'Voice note saved successfully. Transcription will be available soon.',
+        [{ text: 'OK', onPress: () => router.back() }],
+      );
     } catch (err: any) {
       Alert.alert('Error', err?.message || 'Could not save voice note.');
     } finally {

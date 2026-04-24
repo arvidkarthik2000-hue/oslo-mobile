@@ -171,10 +171,14 @@ export default function SmartReportScreen() {
 
               {expandedSystems.has(section.system) && section.key_values && (
                 <View style={styles.keyValues}>
-                  {section.key_values.map((kv, i) => (
+                  {section.key_values.map((kv: any, i: number) => (
                     <View key={i} style={styles.kvRow}>
-                      <Text style={styles.kvName}>{kv.name}</Text>
-                      <Text style={styles.kvValue}>{kv.value}</Text>
+                      <Text style={styles.kvName} numberOfLines={1}>{kv.name || kv.test || 'Unknown'}</Text>
+                      <Text style={styles.kvValue}>
+                        {typeof kv.value === 'number'
+                          ? `${kv.value} ${kv.unit || ''}`
+                          : kv.value}
+                      </Text>
                     </View>
                   ))}
                 </View>

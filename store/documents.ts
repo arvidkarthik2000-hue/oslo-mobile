@@ -8,11 +8,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export interface LabTest {
   test_name: string;
   loinc_code?: string;
+  value?: string;
   value_num?: number;
   unit?: string;
   ref_low?: number;
   ref_high?: number;
-  flag?: string; // 'ok' | 'watch' | 'flag' | 'critical'
+  flag?: string; // 'ok' | 'watch' | 'flag' | 'critical' | 'above' | 'below' | 'normal'
+  reference_range?: string;
 }
 
 export interface Medication {
@@ -71,7 +73,7 @@ export const useDocumentsStore = create<DocumentsState>()(
         for (const doc of get().documents) {
           if (doc.tests) {
             for (const t of doc.tests) {
-              if (t.flag && t.flag !== 'ok') {
+              if (t.flag && t.flag !== 'ok' && t.flag !== 'normal') {
                 allTests.push(t);
               }
             }

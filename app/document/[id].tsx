@@ -254,6 +254,28 @@ export default function DocumentDetailScreen() {
             )}
           </View>
         )}
+
+        {/* Fallback for documents with no usable extraction */}
+        {tests.length === 0 && medications.length === 0 && (
+          <View style={styles.section}>
+            <View style={styles.emptyExtraction}>
+              <Text style={styles.emptyExtractionIcon}>📄</Text>
+              <Text style={styles.emptyExtractionTitle}>
+                {doc.classified_as === 'other'
+                  ? "This document couldn't be automatically analyzed"
+                  : 'No extraction data available'}
+              </Text>
+              <Text style={styles.emptyExtractionText}>
+                {doc.s3_key ? `File: ${doc.s3_key.split('/').pop() || 'document'}` : 'Document uploaded'}
+                {'\n'}
+                {doc.uploaded_at
+                  ? `Uploaded: ${new Date(doc.uploaded_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                  : ''}
+                {doc.byte_size ? `\nSize: ${(doc.byte_size / 1024).toFixed(1)} KB` : ''}
+              </Text>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -405,5 +427,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textSecondary,
     fontStyle: 'italic',
+  },
+  emptyExtraction: {
+    alignItems: 'center' as const,
+    padding: spacing(6),
+  },
+  emptyExtractionIcon: { fontSize: 48, marginBottom: spacing(3) },
+  emptyExtractionTitle: {
+    fontSize: 16,
+    fontWeight: '500' as const,
+    color: colors.textPrimary,
+    textAlign: 'center' as const,
+    marginBottom: spacing(2),
+  },
+  emptyExtractionText: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    textAlign: 'center' as const,
+    lineHeight: 20,
   },
 });
