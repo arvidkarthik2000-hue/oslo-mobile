@@ -61,9 +61,26 @@ export default function DocumentDetailScreen() {
   const flagToStatus = (flag?: string) => {
     switch (flag) {
       case 'watch': return 'watch' as const;
-      case 'flag': case 'critical': return 'flag' as const;
+      case 'flag': case 'critical': case 'above': case 'below': return 'flag' as const;
       default: return 'ok' as const;
     }
+  };
+
+  const flagLabel = (flag?: string) => {
+    switch (flag) {
+      case 'above': return 'High';
+      case 'below': return 'Low';
+      case 'critical': return 'Critical';
+      case 'flag': return 'Flag';
+      case 'watch': return 'Watch';
+      default: return 'Normal';
+    }
+  };
+
+  const parseRefRange = (t: any) => {
+    if (t.ref_low != null && t.ref_high != null) return `${t.ref_low}–${t.ref_high}`;
+    if (t.reference_range) return t.reference_range;
+    return '—';
   };
 
   if (loading) {
@@ -87,8 +104,8 @@ export default function DocumentDetailScreen() {
   }
 
   const currentExt = doc.extractions?.find((e: any) => e.is_current);
-  const tests = currentExt?.json_payload?.tests || [];
-  const medications = currentExt?.json_payload?.medications || [];
+  const tests = currentExt?.json_payload?.tests || doc.tests || [];
+  const medications = currentExt?.json_payload?.medications || doc.medications || [];
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -144,18 +161,16 @@ export default function DocumentDetailScreen() {
                     { flex: 2, textAlign: 'right', fontWeight: '600' },
                   ]}
                 >
-                  {t.value_num ?? '—'}
+                  {t.value_num ?? t.value ?? '—'}
                 </Text>
                 <Text style={[styles.td, { flex: 1.5, textAlign: 'center' }]}>
                   {t.unit || ''}
                 </Text>
                 <Text style={[styles.td, { flex: 2, textAlign: 'center' }]}>
-                  {t.ref_low != null && t.ref_high != null
-                    ? `${t.ref_low}–${t.ref_high}`
-                    : '—'}
+                  {parseRefRange(t)}
                 </Text>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                  <StatusPill status={flagToStatus(t.flag)} text={t.flag === 'critical' ? 'Critical' : t.flag === 'flag' ? 'High' : t.flag === 'watch' ? 'Watch' : 'Normal'} />
+                  <StatusPill status={flagToStatus(t.flag)} text={flagLabel(t.flag)} />
                 </View>
               </View>
             ))}
