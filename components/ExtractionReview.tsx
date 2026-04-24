@@ -53,10 +53,31 @@ export function ExtractionReview({
         return 'watch' as const;
       case 'flag':
       case 'critical':
+      case 'above':
+      case 'below':
         return 'flag' as const;
       default:
         return 'ok' as const;
     }
+  };
+
+  const flagLabel = (flag?: string) => {
+    switch (flag) {
+      case 'above': return 'High';
+      case 'below': return 'Low';
+      case 'critical': return 'Critical';
+      case 'flag': return 'High';
+      case 'watch': return 'Watch';
+      default: return 'Normal';
+    }
+  };
+
+  const displayValue = (t: LabTest) => t.value_num ?? t.value ?? '—';
+
+  const displayRef = (t: LabTest) => {
+    if (t.ref_low != null && t.ref_high != null) return `${t.ref_low}–${t.ref_high}`;
+    if (t.reference_range) return t.reference_range;
+    return '—';
   };
 
   return (
@@ -103,27 +124,25 @@ export function ExtractionReview({
             {editingIdx === idx ? (
               <TextInput
                 style={[styles.td, styles.colValue, styles.input]}
-                value={String(test.value_num ?? '')}
+                value={String(test.value_num ?? test.value ?? '')}
                 onChangeText={(v) => updateTest(idx, 'value_num', v)}
                 keyboardType="numeric"
                 autoFocus
               />
             ) : (
               <Text style={[styles.td, styles.colValue, styles.valueText]}>
-                {test.value_num ?? '—'}
+                {displayValue(test)}
               </Text>
             )}
 
             <Text style={[styles.td, styles.colUnit]}>{test.unit ?? ''}</Text>
 
             <Text style={[styles.td, styles.colRef]}>
-              {test.ref_low != null && test.ref_high != null
-                ? `${test.ref_low}–${test.ref_high}`
-                : '—'}
+              {displayRef(test)}
             </Text>
 
             <View style={[styles.colStatus]}>
-              <StatusPill status={flagToStatus(test.flag)} text={test.flag === 'critical' ? 'Critical' : test.flag === 'flag' ? 'High' : test.flag === 'watch' ? 'Watch' : 'Normal'} />
+              <StatusPill status={flagToStatus(test.flag)} text={flagLabel(test.flag)} />
             </View>
           </TouchableOpacity>
         ))}

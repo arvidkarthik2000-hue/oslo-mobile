@@ -42,7 +42,7 @@ interface MetricData {
 const flagToStatus = (flag?: string | null) => {
   switch (flag) {
     case 'watch': return 'watch' as const;
-    case 'flag': case 'critical': return 'flag' as const;
+    case 'flag': case 'critical': case 'above': case 'below': return 'flag' as const;
     default: return 'ok' as const;
   }
 };
