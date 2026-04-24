@@ -147,8 +147,8 @@ export default function SmartReportScreen() {
           </Text>
         </View>
 
-        {/* System cards */}
-        {sections.length > 0 ? (
+        {/* System cards — only show if sections have actual key_values data */}
+        {sections.length > 0 && sections.some((s) => s.key_values && s.key_values.length > 0) ? (
           sections.map((section) => (
             <TouchableOpacity
               key={section.system}
@@ -187,7 +187,33 @@ export default function SmartReportScreen() {
           ))
         ) : markdown ? (
           <View style={styles.markdownWrap}>
-            <Text style={styles.markdownText}>{markdown}</Text>
+            {markdown.split('\n').map((line, i) => {
+              const trimmed = line.trim();
+              if (!trimmed) return <View key={i} style={{ height: 8 }} />;
+              if (trimmed.startsWith('## ')) {
+                return (
+                  <Text key={i} style={styles.mdHeading}>
+                    {trimmed.replace(/^## /, '')}
+                  </Text>
+                );
+              }
+              if (trimmed.startsWith('***')) {
+                return <View key={i} style={styles.mdDivider} />;
+              }
+              // Render bold markers
+              const parts = trimmed.split(/\*\*(.*?)\*\*/);
+              return (
+                <Text key={i} style={styles.markdownText}>
+                  {parts.map((part, j) =>
+                    j % 2 === 1 ? (
+                      <Text key={j} style={styles.mdBold}>{part}</Text>
+                    ) : (
+                      <Text key={j}>{part}</Text>
+                    )
+                  )}
+                </Text>
+              );
+            })}
           </View>
         ) : null}
 
@@ -310,6 +336,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textPrimary,
     lineHeight: 22,
+  },
+  mdHeading: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.textPrimary,
+    marginTop: spacing(4),
+    marginBottom: spacing(2),
+  },
+  mdBold: {
+    fontWeight: '600',
+  },
+  mdDivider: {
+    height: 1,
+    backgroundColor: colors.borderTertiary,
+    marginVertical: spacing(4),
   },
   shareBtn: {
     marginHorizontal: spacing(5),
