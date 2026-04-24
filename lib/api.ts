@@ -1,15 +1,38 @@
 /**
- * OSLO API client.
+ * OSLO API client — runtime-configurable base URL.
  *
- * For local dev, set EXPO_PUBLIC_API_URL in .env to your LAN IP:
- *   EXPO_PUBLIC_API_URL=http://192.168.1.X:8000
- *
- * Do NOT use localhost — Android emulator/device can't reach host localhost.
+ * The URL is determined by (in priority order):
+ * 1. Runtime override via setApiUrl() (saved to AsyncStorage)
+ * 2. Build-time EXPO_PUBLIC_API_URL env var (set in eas.json)
+ * 3. Fallback default
  */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuthStore } from '../store/auth';
 
-const BASE_URL =
+let BASE_URL =
   process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:8000';
+
+/** Get the current API base URL. */
+export function getApiUrl(): string {
+  return BASE_URL;
+}
+
+/** Set a new API base URL at runtime (persisted across restarts). */
+export async function setApiUrl(url: string): Promise<void> {
+  // Strip trailing slash
+  BASE_URL = url.replace(/\/+$/, '');
+  await AsyncStorage.setItem('oslo_api_base_url', BASE_URL);
+}
+
+/** Load saved API URL from storage. Call once during app init, before any API calls. */
+export async function initApiUrl(): Promise<void> {
+  try {
+    const saved = await AsyncStorage.getItem('oslo_api_base_url');
+    if (saved) BASE_URL = saved;
+  } catch {
+    // Ignore — use default
+  }
+}
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

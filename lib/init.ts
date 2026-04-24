@@ -5,11 +5,8 @@
 import { useAuthStore } from '../store/auth';
 import { useDocumentsStore } from '../store/documents';
 import type { DocumentRecord } from '../store/documents';
-import { api } from './api';
+import { api, getApiUrl } from './api';
 import { seedDemoData } from './seed-demo-data';
-
-const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:8000';
 
 export async function initializeDemoUser(): Promise<boolean> {
   const { accessToken, setTokens, setActiveProfile } =
@@ -23,7 +20,7 @@ export async function initializeDemoUser(): Promise<boolean> {
   }
 
   try {
-    const res = await fetch(`${BASE_URL}/auth/dev-create`, {
+    const res = await fetch(`${getApiUrl()}/auth/dev-create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),

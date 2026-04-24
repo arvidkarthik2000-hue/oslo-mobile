@@ -23,10 +23,7 @@ import { ExtractionReview } from '../../components/ExtractionReview';
 import { useAuthStore } from '../../store/auth';
 import { useDocumentsStore } from '../../store/documents';
 import type { LabTest } from '../../store/documents';
-import { api } from '../../lib/api';
-
-const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:8000';
+import { api, getApiUrl } from '../../lib/api';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -101,7 +98,7 @@ export default function UploadReviewScreen() {
       } as any);
 
       const uploadRes = await fetch(
-        `${BASE_URL}/documents/${docId}/upload-file`,
+        `${getApiUrl()}/documents/${docId}/upload-file`,
         {
           method: 'POST',
           headers: {
@@ -117,7 +114,7 @@ export default function UploadReviewScreen() {
       }
 
       const { file_url } = await uploadRes.json();
-      const publicFileUrl = `${BASE_URL}${file_url}`;
+      const publicFileUrl = `${getApiUrl()}${file_url}`;
 
       // Step 3: Finalize (classify + extract + embed) with the public URL
       setPhase('processing');

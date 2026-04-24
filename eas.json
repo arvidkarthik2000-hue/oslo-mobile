@@ -6,7 +6,7 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://surgeon-deal-capture-beyond.trycloudflare.com"
+        "EXPO_PUBLIC_API_URL": "https://humanitarian-wear-interests-sri.trycloudflare.com"
       },
       "android": {
         "buildType": "apk",

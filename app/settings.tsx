@@ -17,7 +17,7 @@ import { router } from 'expo-router';
 import { colors, spacing, radius } from '../components/design-tokens';
 import { useAuthStore } from '../store/auth';
 import { useDocumentsStore } from '../store/documents';
-import { api } from '../lib/api';
+import { api, getApiUrl, setApiUrl } from '../lib/api';
 
 export default function SettingsScreen() {
   const logout = useAuthStore((s) => s.logout);
@@ -31,6 +31,8 @@ export default function SettingsScreen() {
   const [sex, setSex] = useState('M');
   const [saving, setSaving] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [backendUrl, setBackendUrl] = useState(getApiUrl());
+  const [savingUrl, setSavingUrl] = useState(false);
 
   // Load current profile data from backend
   useEffect(() => {
@@ -219,6 +221,50 @@ export default function SettingsScreen() {
           >
             <Text style={[styles.demoBtnText, { color: colors.statusFlag }]}>
               🗑️ Reset to Empty State
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Developer */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Developer</Text>
+          <View style={styles.field}>
+            <Text style={styles.label}>Backend URL</Text>
+            <TextInput
+              style={styles.input}
+              value={backendUrl}
+              onChangeText={setBackendUrl}
+              placeholder="https://your-tunnel.trycloudflare.com"
+              placeholderTextColor={colors.textTertiary}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="url"
+            />
+          </View>
+          <TouchableOpacity
+            style={[styles.saveBtn, savingUrl && { opacity: 0.5 }]}
+            onPress={async () => {
+              setSavingUrl(true);
+              try {
+                const url = backendUrl.trim().replace(/\/+$/, '');
+                // Quick health check
+                const healthRes = await fetch(`${url}/health`, { method: 'GET' }).catch(() => null);
+                if (!healthRes || !healthRes.ok) {
+                  Alert.alert('Connection Failed', `Could not reach ${url}/health. Check the URL and try again.`);
+                  return;
+                }
+                await setApiUrl(url);
+                Alert.alert('Saved', `Backend URL updated to:\n${url}`);
+              } catch (err: any) {
+                Alert.alert('Error', err?.message || 'Could not save URL.');
+              } finally {
+                setSavingUrl(false);
+              }
+            }}
+            disabled={savingUrl}
+          >
+            <Text style={styles.saveBtnText}>
+              {savingUrl ? 'Testing...' : '🔗 Save & Test Connection'}
             </Text>
           </TouchableOpacity>
         </View>
